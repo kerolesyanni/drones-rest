@@ -25,4 +25,7 @@ public class Medication {
 
 	@Column(name = "weight", columnDefinition = "VARCHAR(10) NOT NULL")
 	private double weight;
+
+	@Column(name = "image", columnDefinition = "VARCHAR(10) NOT NULL")
+	private String image;
 }

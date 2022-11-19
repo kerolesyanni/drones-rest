@@ -19,10 +19,10 @@ import java.math.BigDecimal;
 public class Drone {
 
 	@Id
-	@Column(name = "serial_no", columnDefinition = "VARCHAR(16) NOT NULL")
+	@Column(name = "serial_no", columnDefinition = "VARCHAR(100) NOT NULL")
 	private String serialNumber;
 
-	@Column(name = "model", columnDefinition = "VARCHAR(50) NOT NULL") // LightWeight, MiddleWeight, CruiserWeight,
+	@Column(name = "model", columnDefinition = "VARCHAR(50) NOT NULL") // Lightweight, Middleweight, Cruiserweight, Heavyweight
 	private String model;
 	
 	@Column(name = "weight_limit", columnDefinition = "VARCHAR(10) NOT NULL")
