@@ -8,6 +8,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DroneGetBatteryRequest {
+public class DroneSerialNumberRequest {
 	private String serialNumber;
 }

@@ -3,11 +3,12 @@ package com.dronesapi.drones.service;
 import com.dronesapi.drones.entity.Drone;
 import com.dronesapi.drones.entity.DroneLoadMedication;
 import com.dronesapi.drones.entity.Medication;
-import com.dronesapi.drones.model.request.DroneGetBatteryRequest;
+import com.dronesapi.drones.model.request.DroneSerialNumberRequest;
 import com.dronesapi.drones.model.request.DroneRegisterRequest;
 import com.dronesapi.drones.model.request.LoadDroneRequest;
 import com.dronesapi.drones.model.response.AvailableDroneResponse;
 import com.dronesapi.drones.model.response.DroneBatteryDetailsResponse;
+import com.dronesapi.drones.model.response.DroneMedicationLoadResponse;
 import com.dronesapi.drones.model.response.DroneResponse;
 import com.dronesapi.drones.repository.DroneRepository;
 import com.dronesapi.drones.repository.LoadDroneRepository;
@@ -19,13 +20,13 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DroneService {
 
     @Autowired
     private DroneRepository droneRepository;
-
     @Autowired
     private MedicationRepository medicationRepository;
     @Autowired
@@ -54,7 +55,7 @@ public class DroneService {
         return new AvailableDroneResponse("Success", LocalDateTime.now(), drones);
     }
 
-    public DroneBatteryDetailsResponse getBatteryLevel(DroneGetBatteryRequest request) {
+    public DroneBatteryDetailsResponse getBatteryLevel(DroneSerialNumberRequest request) {
 
         Drone newDrone = new Drone();
         DecimalFormat decFormat = new DecimalFormat("#%");
@@ -149,5 +150,24 @@ public class DroneService {
         loadDroneResponse.setTimestamp(LocalDateTime.now());
 
         return loadDroneResponse;
+    }
+
+    public DroneMedicationLoadResponse getLoadedMedicationForADrone(String serialNumber) {
+
+        List<DroneLoadMedication> droneLoadMedicationList = loadDroneRepository.findAllByDroneSerialNumber(serialNumber);
+        if (droneLoadMedicationList == null || droneLoadMedicationList.isEmpty()) {
+            throw new RuntimeException("No load Medication details for the specified drone");
+        }
+        DroneMedicationLoadResponse droneLoad = new DroneMedicationLoadResponse();
+        droneLoad.setResult("success");
+        droneLoad.setSerialNumber(droneLoadMedicationList.get(0).getDrone().getSerialNumber());
+        droneLoad.setTimestamp(LocalDateTime.now());
+        List<Medication> medications = droneLoadMedicationList
+                .stream()
+                .map(DroneLoadMedication::getMedication)
+                .collect(Collectors.toList());
+        droneLoad.setMedications(medications);
+
+        return droneLoad;
     }
 }

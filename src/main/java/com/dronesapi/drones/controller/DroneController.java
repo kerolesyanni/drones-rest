@@ -1,11 +1,12 @@
 package com.dronesapi.drones.controller;
 
 import com.dronesapi.drones.exception.BadRequestException;
-import com.dronesapi.drones.model.request.DroneGetBatteryRequest;
+import com.dronesapi.drones.model.request.DroneSerialNumberRequest;
 import com.dronesapi.drones.model.request.DroneRegisterRequest;
 import com.dronesapi.drones.model.request.LoadDroneRequest;
 import com.dronesapi.drones.model.response.AvailableDroneResponse;
 import com.dronesapi.drones.model.response.DroneBatteryDetailsResponse;
+import com.dronesapi.drones.model.response.DroneMedicationLoadResponse;
 import com.dronesapi.drones.model.response.DroneResponse;
 import com.dronesapi.drones.service.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class DroneController {
         return new ResponseEntity<>(drones, HttpStatus.OK);
     }
     @PostMapping(path = "/battery", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<DroneBatteryDetailsResponse> checkDroneBattery(@RequestBody() DroneGetBatteryRequest batteryRequest) {
+    public ResponseEntity<DroneBatteryDetailsResponse> checkDroneBattery(@RequestBody() DroneSerialNumberRequest batteryRequest) {
         if (batteryRequest.getSerialNumber() == null || batteryRequest.getSerialNumber().isEmpty()) {
             throw new RuntimeException("SerialNumber is Required");
         }
@@ -46,6 +47,12 @@ public class DroneController {
     public ResponseEntity<DroneResponse> loadDroneWithMedication(@RequestBody LoadDroneRequest loadRequest) {
         DroneResponse loadDrone = droneService.loadDrone(loadRequest);
         return new ResponseEntity<>(loadDrone, HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "details/{serialNumber}", produces = "application/json")
+    public ResponseEntity<DroneMedicationLoadResponse> checkLoadedMedicationItem(@PathVariable("serialNumber") String serialNumber) {
+        DroneMedicationLoadResponse droneLoads = droneService.getLoadedMedicationForADrone(serialNumber);
+        return new ResponseEntity<>(droneLoads, HttpStatus.OK);
     }
     private void validateDrone(String serialNumber, double weightLimit) throws BadRequestException {
         if (serialNumber.length() > 100) {
