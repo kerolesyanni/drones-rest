@@ -1,6 +1,6 @@
-insert into drone (battery, model, drone_state, weight_limit, serial_no) values (0.95, 'Middleweight', 'IDLE', 500, 'QWERTY');
-insert into drone (battery, model, drone_state, weight_limit, serial_no) values (0.90, 'Middleweight', 'IDLE', 400, 'ZXCVB');
-insert into drone (battery, model, drone_state, weight_limit, serial_no) values (0.20, 'Middleweight', 'IDLE', 450, 'ASDFGH');
+insert into drone (battery, model, drone_state, weight_limit, serial_no) values (0.95, 'Middleweight', 'IDLE', 500.0, 'QWERTY');
+insert into drone (battery, model, drone_state, weight_limit, serial_no) values (0.90, 'Middleweight', 'IDLE', 400.0, 'ZXCVB');
+insert into drone (battery, model, drone_state, weight_limit, serial_no) values (0.20, 'Middleweight', 'IDLE', 450.0, 'ASDFGH');
 
 insert into medication (image, name, weight, code) values ('1', 'med1', 50, 'KY50');
 insert into medication (image, name, weight, code) values ('2', 'med2', 100, 'KY100');
