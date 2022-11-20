@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterDroneResponse {
+public class DroneResponse {
 	private String result;
 	private String serialNumber;
 	private String message;
