@@ -1,8 +1,10 @@
 package com.dronesapi.drones.model.response;
 
+import com.dronesapi.drones.entity.Drone;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -10,10 +12,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DroneBatteryDetailsResponse {
-
+public class AvailableDroneResponse {
 	private String status;
-	private String serialNumber;
-	private String battery;
 	private LocalDateTime timestamp;
+	private List<Drone> drones;
 }

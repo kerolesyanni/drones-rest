@@ -3,6 +3,7 @@ package com.dronesapi.drones.service;
 import com.dronesapi.drones.entity.Drone;
 import com.dronesapi.drones.model.request.DroneGetBatteryRequest;
 import com.dronesapi.drones.model.request.DroneRegisterRequest;
+import com.dronesapi.drones.model.response.AvailableDroneResponse;
 import com.dronesapi.drones.model.response.DroneBatteryDetailsResponse;
 import com.dronesapi.drones.model.response.RegisterDroneResponse;
 import com.dronesapi.drones.repository.DroneRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class DroneService {
@@ -36,6 +38,11 @@ public class DroneService {
 		return droneResponse;
 	}
 
+	public AvailableDroneResponse getAvailableDrones() {
+		List<Drone> drones = droneRepository.findAllByState("IDLE");
+		return new AvailableDroneResponse("status", LocalDateTime.now(), drones);
+	}
+
 	public DroneBatteryDetailsResponse getBatteryLevel(DroneGetBatteryRequest request) {
 
 		Drone newDrone = new Drone();
@@ -50,7 +57,7 @@ public class DroneService {
 		batteryDetailsResponse.setStatus("success");
 		batteryDetailsResponse.setSerialNumber(droneBattery.getSerialNumber());
 		batteryDetailsResponse.setBattery(decFormat.format(droneBattery.getBattery()));
-		batteryDetailsResponse.setTimestamp(java.time.LocalDateTime.now());
+		batteryDetailsResponse.setTimestamp(LocalDateTime.now());
 
 		return batteryDetailsResponse;
 	}

@@ -3,6 +3,7 @@ package com.dronesapi.drones.controller;
 import com.dronesapi.drones.exception.BadRequestException;
 import com.dronesapi.drones.model.request.DroneGetBatteryRequest;
 import com.dronesapi.drones.model.request.DroneRegisterRequest;
+import com.dronesapi.drones.model.response.AvailableDroneResponse;
 import com.dronesapi.drones.model.response.DroneBatteryDetailsResponse;
 import com.dronesapi.drones.model.response.RegisterDroneResponse;
 import com.dronesapi.drones.service.DroneService;
@@ -26,8 +27,13 @@ public class DroneController {
         return new ResponseEntity<>(newDrone, HttpStatus.OK);
     }
 
+    @GetMapping(path= "/available", produces = "application/json")
+    public ResponseEntity<AvailableDroneResponse> getAvailableDroneForLoading() {
+        AvailableDroneResponse drones = droneService.getAvailableDrones();
+        return new ResponseEntity<>(drones, HttpStatus.OK);
+    }
     @PostMapping(path = "/battery", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<DroneBatteryDetailsResponse> checkDroneBattery(@RequestBody(required = true) DroneGetBatteryRequest batteryRequest) {
+    public ResponseEntity<DroneBatteryDetailsResponse> checkDroneBattery(@RequestBody() DroneGetBatteryRequest batteryRequest) {
         if (batteryRequest.getSerialNumber() == null || batteryRequest.getSerialNumber().isEmpty()) {
             throw new RuntimeException("SerialNumber is Required");
         }
