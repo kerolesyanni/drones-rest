@@ -75,28 +75,6 @@ public class DroneService {
     }
 
     public DroneResponse loadDrone(LoadDroneRequest loadRequest) {
-        Medication medication1 = new Medication("KY50", "med1", 50, "1");
-        Medication medication2 = new Medication("KY100", "med2", 100, "2");
-        Medication medication3 = new Medication("KY150", "med3", 150, "3");
-        Medication medication4 = new Medication("KY200", "med4", 200, "4");
-        Medication medication5 = new Medication("KY250", "med5", 250, "5");
-        Medication medication6 = new Medication("KY260", "med6", 260, "6");
-        Medication medication7 = new Medication("KY180", "med7", 180, "7");
-        Medication medication8 = new Medication("KY300", "med8", 300, "8");
-        Medication medication9 = new Medication("KY350", "med9", 350, "9");
-        Medication medication10 = new Medication("KY400", "med10 ", 400, "10");
-        Medication medication11 = new Medication("KY550", "med11 ", 550, "11");
-        medicationRepository.save(medication1);
-        medicationRepository.save(medication2);
-        medicationRepository.save(medication3);
-        medicationRepository.save(medication4);
-        medicationRepository.save(medication5);
-        medicationRepository.save(medication6);
-        medicationRepository.save(medication7);
-        medicationRepository.save(medication8);
-        medicationRepository.save(medication9);
-        medicationRepository.save(medication10);
-        medicationRepository.save(medication11);
 
         droneRepository.setUpdateState("LOADING", loadRequest.getSerialNumber());
         Drone drone = droneRepository.findBySerialNumber(loadRequest.getSerialNumber());
