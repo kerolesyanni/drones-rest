@@ -46,7 +46,7 @@ public class DroneController {
     @PostMapping(path = "/load", consumes = "application/json", produces = "application/json")
     public ResponseEntity<DroneResponse> loadDroneWithMedication(@RequestBody LoadDroneRequest loadRequest) {
         DroneResponse loadDrone = droneService.loadDrone(loadRequest);
-        return new ResponseEntity<>(loadDrone, HttpStatus.CREATED);
+        return new ResponseEntity<>(loadDrone, HttpStatus.OK);
     }
 
     @GetMapping(path = "details/{serialNumber}", produces = "application/json")
