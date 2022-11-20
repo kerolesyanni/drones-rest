@@ -1,12 +1,15 @@
 package com.dronesapi.drones.service;
 
 import com.dronesapi.drones.entity.Drone;
+import com.dronesapi.drones.model.request.DroneGetBatteryRequest;
 import com.dronesapi.drones.model.request.DroneRegisterRequest;
+import com.dronesapi.drones.model.response.DroneBatteryDetailsResponse;
 import com.dronesapi.drones.model.response.RegisterDroneResponse;
 import com.dronesapi.drones.repository.DroneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 @Service
@@ -31,5 +34,24 @@ public class DroneService {
 		droneResponse.setTimestamp(LocalDateTime.now());
 
 		return droneResponse;
+	}
+
+	public DroneBatteryDetailsResponse getBatteryLevel(DroneGetBatteryRequest request) {
+
+		Drone newDrone = new Drone();
+		DecimalFormat decFormat = new DecimalFormat("#%");
+		DroneBatteryDetailsResponse batteryDetailsResponse = new DroneBatteryDetailsResponse();
+		newDrone.setSerialNumber(request.getSerialNumber());
+		Drone droneBattery = droneRepository.findBySerialNumber(newDrone.getSerialNumber());
+		if (droneBattery == null) {
+			throw new RuntimeException("Drone battery level details not found");
+		}
+
+		batteryDetailsResponse.setStatus("success");
+		batteryDetailsResponse.setSerialNumber(droneBattery.getSerialNumber());
+		batteryDetailsResponse.setBattery(decFormat.format(droneBattery.getBattery()));
+		batteryDetailsResponse.setTimestamp(java.time.LocalDateTime.now());
+
+		return batteryDetailsResponse;
 	}
 }

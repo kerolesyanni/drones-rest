@@ -1,7 +1,9 @@
 package com.dronesapi.drones.controller;
 
 import com.dronesapi.drones.exception.BadRequestException;
+import com.dronesapi.drones.model.request.DroneGetBatteryRequest;
 import com.dronesapi.drones.model.request.DroneRegisterRequest;
+import com.dronesapi.drones.model.response.DroneBatteryDetailsResponse;
 import com.dronesapi.drones.model.response.RegisterDroneResponse;
 import com.dronesapi.drones.service.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,16 @@ public class DroneController {
         RegisterDroneResponse newDrone = droneService.register(droneRequest);
         return new ResponseEntity<>(newDrone, HttpStatus.OK);
     }
+
+    @PostMapping(path = "/battery", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<DroneBatteryDetailsResponse> checkDroneBattery(@RequestBody(required = true) DroneGetBatteryRequest batteryRequest) {
+        if (batteryRequest.getSerialNumber() == null || batteryRequest.getSerialNumber().isEmpty()) {
+            throw new RuntimeException("SerialNumber is Required");
+        }
+        DroneBatteryDetailsResponse droneBattery = droneService.getBatteryLevel(batteryRequest);
+        return new ResponseEntity<>(droneBattery, HttpStatus.CREATED);
+    }
+
 
     private void validateDrone(String serialNumber, double weightLimit) throws BadRequestException {
         if (serialNumber.length() > 100) {

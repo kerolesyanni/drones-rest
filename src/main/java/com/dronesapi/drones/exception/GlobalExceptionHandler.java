@@ -22,6 +22,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = {RuntimeException.class})
+    public ResponseEntity<?> handleInvalidInputException(RuntimeException ex) {
+        logger.error("Invalid Input Exception: {}", ex.getMessage());
+        return new ResponseEntity<>(new MessageResponse("failed", ex.getMessage(), LocalDateTime.now()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandler(Exception ex) {
         MessageResponse messageResponse = new MessageResponse("failed", ex.getMessage(), LocalDateTime.now());
